@@ -1,23 +1,28 @@
 <script setup lang="ts">
   import {ref} from 'vue'
 
-  const message = ref("Hello world");
+  const message = ref("Welcome to this tutorial with Elvin Code");
   const showFormular = ref(false)
   const tasks = ref([
-    {id: 1, label: "Bonjoour", level : "high"},
-    {id: 1, label: "Bonjoour", level : "high"},
-    {id: 1, label: "Bonjoour", level : "high"},
-    {id: 1, label: "Bonjoour", level : "high"}
+    // {id: 1, label: "Bonjoour", level : false},
+    // {id: 2, label: "Bonjoour", level : false},
+    // {id: 3, label: "Bonjoour", level : false},
+    // {id: 4, label: "Bonjoour", level : false}
   ])
+  const newTaskValue = ref("");
+  const newTaskPriority = ref(false)
   const addingTask = ()=>{
-    
+    tasks.value.push({
+      id : tasks.value.length +1, 
+      label: newTaskValue.value, 
+      level: newTaskPriority.value
+    })
   }
-  
 </script>
 
 <template>
-  <div class="flex justify-center flex-col h-screen items-center">
-    <h1> {{ message }}</h1>
+  <div class="flex justify-center flex-col min-h-screen items-center">
+    <h1 class="text-xl"> {{ message }}</h1>
     <form 
       @submit.prevent="addingTask()"
       v-if="showFormular"
@@ -25,30 +30,65 @@
     >
       <div>
         <div>
-          <input 
-            type="text" 
-            class="
-              w-full bg-slate-100 border 
-              border-black rounded-sm py-1 px-4 
-            "
-          >
+          <div class="mb-6">
+            <input 
+              v-model="newTaskValue"
+              type="text" 
+              class="
+                block w-full p-3 text-gray-900 border 
+                border-gray-300 rounded-lg 
+                sm:text-md bg-slate-100 
+                "
+              >
+          </div>
+         
         </div>
         <div class="my-4">
           <label for="level">
             High task
-            <input type="checkbox" id="level" >
+            <input 
+              type="checkbox" id="level" 
+              v-model="newTaskPriority" >
           </label>
         </div>
-        <input 
-          type="submit" 
-          value="Ajouter" 
-          class="bg-indigo-500 cursor-pointer text-white px-4 py-2 rounded-sm font-semibold"
-        >
+        <div class="flex space-x-4">
+          <input 
+            type="submit" 
+            value="Ajouter" 
+            class="
+              bg-indigo-500 cursor-pointer 
+              text-white px-4 py-2 rounded-sm 
+              font-semibold
+            "
+          >
+          <button
+            @click="showFormular = false"
+            class="
+            bg-red-500 cursor-pointer 
+              text-white px-4 py-2 rounded-sm 
+              font-semibold
+            "
+          >
+            Fermer
+          </button>
+        </div>
       </div>
     </form>
-    <div class="w-1/3 min-h-[10rem] flex flex-col items-center justify-center bg-slate-300 py-4 px-8 bg mt-3">
-      <ul class="space-y-4" v-if="!tasks.length">
-        <li v-for="({id, label}) in tasks" :key="id" class="p-3 bg-white text-black rounded-md flex justify-between items-center">
+    <div 
+      class="
+        w-1/3 min-h-[10rem] flex flex-col items-center 
+        justify-center bg-slate-300 py-4 px-8 bg mt-3
+      "
+    >
+
+      <ul class="space-y-4" v-if="tasks.length != 0">
+        <li 
+          v-for="({id, label}) in tasks" :key="id" 
+          class="
+            p-3 bg-white text-black rounded-md flex 
+            justify-between items-center w-96
+          "
+        >
           <span class="font-semibold">{{ label }}</span>
           <div class="flex gap-2 text-white">
             <button class="bg-red-500 p-2 ">Supprimer</button>
@@ -56,7 +96,7 @@
           </div>
         </li>
       </ul>
-      <div>
+      <div v-else>
         <h1 
           class="text-center font-extralight text-2xl"
         >
