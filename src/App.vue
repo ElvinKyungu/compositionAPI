@@ -6,8 +6,23 @@
 
 <template>
   <div>
+    <h1 class="text-3xl font-bold underline">
+      Hello world!
+    </h1>
     <h1> {{ message }}</h1>
-    <input type="text" v-model="message">
+    <form>
+      <div>
+        <div>
+          <input type="text">
+        </div>
+        <div class="">
+          <label for="level">
+            High task
+            <input type="checkbox" id="level" >
+          </label>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
