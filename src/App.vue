@@ -32,6 +32,9 @@
     editingIndex.value = index;
   };
 
+  const deleteTasks = (index)=>{
+    tasks.value.splice(index, 1);
+  }
   const saveTask = () => {
     tasks.value[editingIndex.value].label = newTaskValue.value;
     showFormular.value = false;
@@ -84,7 +87,7 @@
             {{ index }} {{ item.label }}
           </span>
           <div class="flex gap-2 text-white">
-            <button class="bg-red-500 p-2">Supprimer</button>
+            <button class="bg-red-500 p-2" @click="deleteTasks(index)">Supprimer</button>
             <button class="p-2 bg-indigo-500" @click="editingTask(index)">Editer</button>
           </div>
         </li>
