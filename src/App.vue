@@ -12,6 +12,7 @@
   });
   const newTaskValue = ref("");
   const newTaskPriority = ref(false);
+  const editingIndex = ref(-1);
 
   const addingTask = () => {
     tasks.value.push({
@@ -25,6 +26,19 @@
     newTaskPriority.value = false;
   };
 
+  const editingTask = (index) => {
+    showFormular.value = true;
+    newTaskValue.value = tasks.value[index].label;
+    editingIndex.value = index;
+  };
+
+  const saveTask = () => {
+    tasks.value[editingIndex.value].label = newTaskValue.value;
+    showFormular.value = false;
+    newTaskValue.value = "";
+    editingIndex.value = -1;
+  };
+
   const togglePurchased = (item) => {
     item.purchased = !item.purchased;
   };
@@ -34,7 +48,7 @@
   <div class="flex justify-center flex-col min-h-screen items-center">
     <h1 class="text-xl">{{ message }}</h1>
     <form 
-      @submit.prevent="addingTask()" 
+      @submit.prevent="editingIndex !== -1 ? saveTask() : addingTask()" 
       v-if="showFormular" 
       class="w-1/3 min-h-[10rem] bg-slate-300 py-4 px-8 bg mt-3"
     >
@@ -55,7 +69,8 @@
           </label>
         </div>
         <div class="flex space-x-4">
-          <input type="submit" value="Ajouter" class="bg-indigo-500 cursor-pointer text-white px-4 py-2 rounded-sm font-semibold">
+          <input type="submit" value="Ajouter" v-if="editingIndex === -1" class="bg-indigo-500 cursor-pointer text-white px-4 py-2 rounded-sm font-semibold">
+          <input type="submit" value="Enregistrer" v-else class="bg-indigo-500 cursor-pointer text-white px-4 py-2 rounded-sm font-semibold">
           <button @click="showFormular = false" class="bg-red-500 cursor-pointer text-white px-4 py-2 rounded-sm font-semibold">
             Fermer
           </button>
@@ -70,7 +85,7 @@
           </span>
           <div class="flex gap-2 text-white">
             <button class="bg-red-500 p-2">Supprimer</button>
-            <button class="p-2 bg-indigo-500">Editer</button>
+            <button class="p-2 bg-indigo-500" @click="editingTask(index)">Editer</button>
           </div>
         </li>
       </ul>
