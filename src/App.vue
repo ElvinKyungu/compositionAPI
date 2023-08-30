@@ -2,21 +2,26 @@
   import {ref} from 'vue'
 
   const message = ref("Welcome to this tutorial with Elvin Code");
-  const showFormular = ref(false)
+  const showFormular = ref(false);
   const tasks = ref([
-    // {id: 1, label: "Bonjoour", level : false},
-    // {id: 2, label: "Bonjoour", level : false},
-    // {id: 3, label: "Bonjoour", level : false},
-    // {id: 4, label: "Bonjoour", level : false}
+    {id: 1, label: "Bonjoour", purchased: false, level : false},
+    {id: 2, label: "Bonjoour", purchased: true, level : false},
   ])
+  var filteredTasks = ref(tasks.value)
+  // const filterTaks = ()=>{
+  //   filteredTasks = tasks.value.filter(task => task.level);
+  //   console.log(filteredTasks);
+    
+  // }
   const newTaskValue = ref("");
   const newTaskPriority = ref(false)
   const addingTask = ()=>{
     tasks.value.push({
       id : tasks.value.length +1, 
       label: newTaskValue.value, 
+      purchased: false,
       level: newTaskPriority.value
-    })
+    });
   }
 </script>
 
@@ -83,13 +88,18 @@
 
       <ul class="space-y-4" v-if="tasks.length != 0">
         <li 
-          v-for="({id, label}) in tasks" :key="id" 
+          v-for="({id, label, purchased}, index) in tasks" 
+          :key="id" 
           class="
             p-3 bg-white text-black rounded-md flex 
             justify-between items-center w-96
           "
+          
         >
-          <span class="font-semibold">{{ label }}</span>
+          <span 
+            class="font-semibold"
+            :class="{ 'line-through': purchased}"
+          >{{ index }} {{ label }}</span>
           <div class="flex gap-2 text-white">
             <button class="bg-red-500 p-2 ">Supprimer</button>
             <button class="p-2 bg-indigo-500">Editer</button>
@@ -105,7 +115,10 @@
       </div>
       <button
         @click="showFormular=true"
-        class="bg-indigo-500 mt-3 cursor-pointer text-white px-4 py-2 rounded-sm font-semibold"
+        class="
+          bg-indigo-500 mt-3 cursor-pointer 
+          text-white px-4 py-2 rounded-sm font-semibold
+        "
       >
         Ajouter une tâche
       </button>
@@ -114,5 +127,7 @@
 </template>
 
 <style scoped>
-
+.purchased{
+  text-decoration: dashed;
+}
 </style>
